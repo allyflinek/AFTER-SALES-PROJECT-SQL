@@ -1,0 +1,30 @@
+cat (nome do arquivo) para ver o conteudo dentro do arquivo
+ls  (ver os conteudos da pasta) 
+
+git init comando 1, esse comando sere pra dizer ao git que esses arquivos irao pro controle de versao
+
+git add -A  (chamar)
+
+git status
+
+git commit -m "o que vc fez na nova versão"
+
+git status 
+
+depois pegar o link no repositorio (primeira vez) 
+
+git remote add origin https://github.com/allyflinek/SQL_SCRIPTS_PROJETO_PARVI.git exemplo
+
+git push -u origin master
+
+
+versoes:
+
+git status  (depois de ja ter modificado o arquivo)
+ 
+ git add -A 
+ 
+ git commit -m "o que foi alterado"
+ 
+ git push 
+

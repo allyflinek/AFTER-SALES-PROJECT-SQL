@@ -1,7 +1,7 @@
 USE [stage]
 GO
 
-/****** Object:  StoredProcedure [camada0].[pr_DealerNet_Veiculo_Estoque]    Script Date: 26/09/2022 14:34:13 ******/
+/****** Object:  StoredProcedure [camada0].[pr_DealerNet_Veiculo_Estoque]    Script Date: 26/09/2022 15:55:27 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -157,7 +157,6 @@ ALTER PROCEDURE [camada0].[pr_DealerNet_Veiculo_Estoque] AS BEGIN
 -- Description:	<trazendo os dias do transtio cpv
 -- =============================================
 
-
 SELECT  veiculo_codigo, veiculomovimento_data1, veiculomovimento_data2, CASE WHEN Dias_Compra_Entrada < '0' THEN NULL ELSE Dias_Compra_Entrada END AS Dias_Compra_Entrada                                                                                      
 INTO #CPV_DIASCE
 FROM
@@ -176,8 +175,10 @@ FROM
 (SELECT DISTINCT *
 from dealer.dealernetwf.dbo.veiculoestoque ve
 left join dealer.dealernetwf.dbo.veiculomovimento vm WITH (NOLOCK) ON  ve.VeiculoEstoque_VeiculoMovCodEntrada = vm.VeiculoMovimento_Codigo 
-WHERE  veiculoestoque_estoquecod in ('48','110')) entrada_recebido1
+WHERE  veiculoestoque_estoquecod = '48') entrada_recebido1
 GROUP BY veiculo_codigo) r2   ON r1.veiculo_codigo = r2.veiculo_codigo) tot1;
+
+
 
 	CREATE INDEX indx_01 ON #CPV_DIASCE (
 	      veiculo_codigo
@@ -202,7 +203,7 @@ FROM
 (SELECT DISTINCT *
 FROM dealer.dealernetwf.dbo.veiculoestoque ve
 left join dealer.dealernetwf.dbo.veiculomovimento vm  WITH (NOLOCK) ON ve.VeiculoEstoque_VeiculoMovCodEntrada = vm.VeiculoMovimento_Codigo 
-WHERE  veiculoestoque_estoquecod in ('48','110')) entrada_recebido2
+WHERE  veiculoestoque_estoquecod = '48') entrada_recebido2
 GROUP BY veiculo_codigo ) r1
 LEFT JOIN
 (SELECT DISTINCT veiculo_codigo AS veiculo_codigo, MAX(veiculomovimento_data) AS veiculomovimento_data2

@@ -1,12 +1,14 @@
 USE [stage]
 GO
 
-/****** Object:  StoredProcedure [camada0].[Pr_DealerNet_Orcamento_teste]    Script Date: 27/09/2022 17:01:55 ******/
+/****** Object:  StoredProcedure [camada0].[Pr_DealerNet_Orcamento_teste]    Script Date: 27/09/2022 18:00:29 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+
 
 
 
@@ -54,8 +56,20 @@ BEGIN
 	                  ,SUM(OficinaProduto_QtdePedida * OficinaProduto_ValorUnitario)               AS OficinaProduto_Valor
 		        FROM [Dealer].[DealerNetWF].[dbo].OficinaProduto 
 				GROUP BY OficinaProduto_OficinaOrcamentoCod) op                       ON  op.OficinaProduto_OficinaOrcamentoCod  = oo.OficinaOrcamento_Codigo
-	 LEFT JOIN [Dealer].[DealerNetWF].[dbo].OficinaOrcamentoHistorico ooh             ON  oo.OficinaOrcamento_Codigo             = ooh.OficinaOrcamento_Codigo            WHERE (CONVERT(DATE,ooh.OficinaOrcamentoHistorico_Data) >= @data and ooh.OficinaOrcamentoHistorico_Codigo = 'CRI')
+	 LEFT JOIN [Dealer].[DealerNetWF].[dbo].OficinaOrcamentoHistorico ooh             ON  oo.OficinaOrcamento_Codigo             = ooh.OficinaOrcamento_Codigo            WHERE (CONVERT(DATE,ooh.OficinaOrcamentoHistorico_Data) >= @data and ooh.OficinaOrcamentoHistorico_Codigo = 'CRI');
+	
+	UPDATE camada0.DealerNet_Orcamento_teste
+	SET   OficinaProduto_Valor = 565.45
+	WHERE Orcamento_Codigo = '965353';
+
+	UPDATE camada0.DealerNet_Orcamento_teste
+	SET   OficinaProduto_Valor = 1493.56
+	WHERE Orcamento_Codigo = '973751'
+
+	
 	END 
+
+
 GO
 
 

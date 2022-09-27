@@ -13,7 +13,9 @@ AS
 BEGIN 
     DECLARE @data DATE = '20220101';
 
-	--INSERT INTO camada0.DealerNet_Orcamento_teste 
+	TRUNCATE TABLE camada0.DealerNet_Orcamento_teste;
+
+	INSERT INTO camada0.DealerNet_Orcamento_teste 
 	 SELECT 'DLR' AS SISTEMA 
 	,CONCAT('DLR','|',oo.OficinaOrcamento_Codigo)                 AS ID_Origem 
     ,oo.OficinaOrcamento_Codigo                                   AS Orcamento_Codigo
@@ -35,7 +37,7 @@ BEGIN
 	,CONVERT(FLOAT, op.OficinaProduto_Valor)                      AS OficinaProduto_Valor
 	,os.OficinaServico_OSCod                                     AS OficinaServico_OScod
 	,ooh.OficinaOrcamentoHistorico_UsuarioCod                     AS Orcamento_UsuarioCod
-	INTO camada0.DealerNet_Orcamento_teste
+	
 	 FROM [Dealer].[DealerNetWF].dbo.OficinaOrcamento oo 
 	 LEFT JOIN (SELECT OficinaServico_OficinaOrcamentoCod
 	                 ,OficinaServico_OSCod

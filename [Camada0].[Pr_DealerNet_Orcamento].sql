@@ -1,11 +1,13 @@
 USE [stage]
 GO
 
+/****** Object:  StoredProcedure [camada0].[Pr_DealerNet_Orcamento_teste]    Script Date: 27/09/2022 17:01:55 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -38,8 +40,8 @@ BEGIN
     ,oo.OficinaOrcamento_AtendimentoCod                           AS Orcamento_AtendimentoCod
 	,CONVERT(DATE,ooh.OficinaOrcamentoHistorico_Data)             AS Orcamento_DataCriacao
 	,CONVERT(DATETIME,ooh.OficinaOrcamentoHistorico_Data)         AS Orcamento_HoraCriacao
-	,CONVERT(FLOAT, os.OficinaServico_Valor)                      AS OficinaServico_Valor
-	,CONVERT(FLOAT, op.OficinaProduto_Valor)                      AS OficinaProduto_Valor
+	,ISNULL(CONVERT(FLOAT, os.OficinaServico_Valor),0)            AS OficinaServico_Valor
+	,ISNULL(CONVERT(FLOAT, op.OficinaProduto_Valor),0)            AS OficinaProduto_Valor
 	,oo.OficinaOrcamento_Complementar                             AS Orcamento_Complementar
 	 INTO camada0.DealerNet_Orcamento_teste
 	 FROM [Dealer].[DealerNetWF].dbo.OficinaOrcamento oo 

@@ -11,7 +11,7 @@ GO
 CREATE PROCEDURE [camada0].[Pr_DealerNet_Orcamento_teste]
 AS
 BEGIN 
-    DECLARE @data DATE = '20210101';
+    DECLARE @data DATE = '20220101';
 
 	--INSERT INTO camada0.DealerNet_Orcamento_teste 
 	 SELECT 'DLR' AS SISTEMA 
@@ -31,8 +31,10 @@ BEGIN
     ,oo.OficinaOrcamento_AtendimentoCod                           AS Orcamento_AtendimentoCod
 	,CONVERT(DATE,ooh.OficinaOrcamentoHistorico_Data)             AS Orcamento_DataCriacao
 	,CONVERT(DATETIME,ooh.OficinaOrcamentoHistorico_Data)         AS Orcamento_HoraCriacao
-	,CONVERT(FLOAT, OficinaServico_Valor)                         AS OficinaServico_Valor
-	,CONVERT(FLOAT, OficinaProduto_Valor)                         AS OficinaProduto_Valor
+	,CONVERT(FLOAT, os.OficinaServico_Valor)                      AS OficinaServico_Valor
+	,CONVERT(FLOAT, op.OficinaProduto_Valor)                      AS OficinaProduto_Valor
+	,os.OficinaServico_OSCod                                      AS OficinaServico_OScod
+	,ooh.OficinaOrcamentoHistorico_UsuarioCod                     AS Orcamento_UsuarioCod
 	INTO camada0.DealerNet_Orcamento_teste
 	 FROM [Dealer].[DealerNetWF].dbo.OficinaOrcamento oo WITH (NOLOCK)
 	 LEFT JOIN (SELECT OficinaServico_OficinaOrcamentoCod

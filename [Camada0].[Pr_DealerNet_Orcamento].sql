@@ -1,7 +1,6 @@
 USE [stage]
 GO
 
-/****** Object:  StoredProcedure [camada0].[Pr_DealerNet_Orcamento_teste]    Script Date: 27/09/2022 15:58:10 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,13 +8,19 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
+
 ALTER PROCEDURE [camada0].[Pr_DealerNet_Orcamento_teste]
 AS
 BEGIN 
-    DECLARE @data DATE = '20220101';
+     DECLARE @data DATE = '20220101';
 
-	--INSERT INTO camada0.DealerNet_Orcamento_teste 
-	 SELECT 'DLR' AS SISTEMA 
+	 DROP TABLE
+	 IF EXISTS camada0.DealerNet_Orcamento_teste
+	 -- TRUNCATE TABLE camada0.DealerNet_Orcamento_teste;
+
+	 --INSERT INTO camada0.DealerNet_Orcamento_teste
+	 SELECT 
+	'DLR'                                                         AS SISTEMA 
 	,CONCAT('DLR','|',oo.OficinaOrcamento_Codigo)                 AS ID_Origem 
 	,oo.OficinaOrcamento_Empresacod                               AS Orcamento_Empresacod
     ,oo.OficinaOrcamento_Codigo                                   AS Orcamento_Codigo
@@ -36,7 +41,7 @@ BEGIN
 	,CONVERT(FLOAT, os.OficinaServico_Valor)                      AS OficinaServico_Valor
 	,CONVERT(FLOAT, op.OficinaProduto_Valor)                      AS OficinaProduto_Valor
 	,oo.OficinaOrcamento_Complementar                             AS Orcamento_Complementar
-	INTO camada0.DealerNet_Orcamento_teste
+	 INTO camada0.DealerNet_Orcamento_teste
 	 FROM [Dealer].[DealerNetWF].dbo.OficinaOrcamento oo 
 	 LEFT JOIN (SELECT OficinaServico_OficinaOrcamentoCod
 	                 ,OficinaServico_OSCod
@@ -47,7 +52,7 @@ BEGIN
 	                  ,SUM(OficinaProduto_QtdePedida * OficinaProduto_ValorUnitario)               AS OficinaProduto_Valor
 		        FROM [Dealer].[DealerNetWF].[dbo].OficinaProduto 
 				GROUP BY OficinaProduto_OficinaOrcamentoCod) op                       ON  op.OficinaProduto_OficinaOrcamentoCod  = oo.OficinaOrcamento_Codigo
-	 LEFT JOIN [Dealer].[DealerNetWF].[dbo].OficinaOrcamentoHistorico ooh             ON  oo.OficinaOrcamento_Codigo             = ooh.OficinaOrcamento_Codigo            WHERE (ooh.OficinaOrcamentoHistorico_Data >= @data and ooh.OficinaOrcamentoHistorico_Codigo = 'CRI')
+	 LEFT JOIN [Dealer].[DealerNetWF].[dbo].OficinaOrcamentoHistorico ooh             ON  oo.OficinaOrcamento_Codigo             = ooh.OficinaOrcamento_Codigo            WHERE (CONVERT(DATE,ooh.OficinaOrcamentoHistorico_Data) >= @data and ooh.OficinaOrcamentoHistorico_Codigo = 'CRI')
 	END 
 GO
 

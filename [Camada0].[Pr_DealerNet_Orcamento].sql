@@ -1,33 +1,33 @@
 USE [stage]
 GO
 
-
+/****** Object:  StoredProcedure [camada0].[Pr_DealerNet_Orcamento_teste]    Script Date: 27/09/2022 15:58:10 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [camada0].[Pr_DealerNet_Orcamento_teste]
+
+ALTER PROCEDURE [camada0].[Pr_DealerNet_Orcamento_teste]
 AS
 BEGIN 
     DECLARE @data DATE = '20220101';
 
-	TRUNCATE TABLE camada0.DealerNet_Orcamento_teste;
-
-	INSERT INTO camada0.DealerNet_Orcamento_teste 
+	--INSERT INTO camada0.DealerNet_Orcamento_teste 
 	 SELECT 'DLR' AS SISTEMA 
 	,CONCAT('DLR','|',oo.OficinaOrcamento_Codigo)                 AS ID_Origem 
-    ,oo.OficinaOrcamento_Codigo                                   AS Orcamento_Codigo
 	,oo.OficinaOrcamento_Empresacod                               AS Orcamento_Empresacod
+    ,oo.OficinaOrcamento_Codigo                                   AS Orcamento_Codigo
 	,oo.OficinaOrcamento_Veiculocod                               AS Orcamento_Veiculocod
+    ,ooh.OficinaOrcamentoHistorico_UsuarioCod                     AS Orcamento_UsuarioCod
 	,oo.OficinaOrcamento_PessoacodCliente                         AS Orcamento_Pessoa_cod_cliente
-	,oo.OficinaOrcamento_Complementar                             AS Orcamento_Complementar
 	,oo.OficinaOrcamento_Observacao                               AS Orcamento_Observacao 
+	,os.OficinaServico_OSCod                                      AS OficinaServico_OScod
 	,oo.OficinaOrcamento_TipoOSCod                                AS Orcamento_TipoOSCod
-	,CONVERT(DATE,oo.OficinaOrcamento_Validade)                   AS Orcamento_Validade
 	,oo.OficinaOrcamento_Status                                   AS Orcamento_Status 
 	,oo.OficinaOrcamento_KM                                       AS OficinaOrcamento_KM 
+	,CONVERT(DATE,oo.OficinaOrcamento_Validade)                   AS Orcamento_Validade
 	,CONVERT(DATE,oo.OficinaOrcamento_ProximoContato)             AS Orcamento_ProximoContato
 	,oo.OficinaOrcamento_OficinaOrcamentoCodOrigem                AS Orcamento_OrcamentoCodOrigem
     ,oo.OficinaOrcamento_AtendimentoCod                           AS Orcamento_AtendimentoCod
@@ -35,9 +35,8 @@ BEGIN
 	,CONVERT(DATETIME,ooh.OficinaOrcamentoHistorico_Data)         AS Orcamento_HoraCriacao
 	,CONVERT(FLOAT, os.OficinaServico_Valor)                      AS OficinaServico_Valor
 	,CONVERT(FLOAT, op.OficinaProduto_Valor)                      AS OficinaProduto_Valor
-	,os.OficinaServico_OSCod                                     AS OficinaServico_OScod
-	,ooh.OficinaOrcamentoHistorico_UsuarioCod                     AS Orcamento_UsuarioCod
-	
+	,oo.OficinaOrcamento_Complementar                             AS Orcamento_Complementar
+	INTO camada0.DealerNet_Orcamento_teste
 	 FROM [Dealer].[DealerNetWF].dbo.OficinaOrcamento oo 
 	 LEFT JOIN (SELECT OficinaServico_OficinaOrcamentoCod
 	                 ,OficinaServico_OSCod
@@ -50,4 +49,6 @@ BEGIN
 				GROUP BY OficinaProduto_OficinaOrcamentoCod) op                       ON  op.OficinaProduto_OficinaOrcamentoCod  = oo.OficinaOrcamento_Codigo
 	 LEFT JOIN [Dealer].[DealerNetWF].[dbo].OficinaOrcamentoHistorico ooh             ON  oo.OficinaOrcamento_Codigo             = ooh.OficinaOrcamento_Codigo            WHERE (ooh.OficinaOrcamentoHistorico_Data >= @data and ooh.OficinaOrcamentoHistorico_Codigo = 'CRI')
 	END 
-	GO
+GO
+
+

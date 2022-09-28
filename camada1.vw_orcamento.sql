@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE VIEW [camada1].[vw_Orcamento_Teste]
+ALTER VIEW [camada1].[vw_Orcamento_Teste]
 AS
 
 
@@ -18,7 +18,7 @@ AS
 SELECT
 	   o.[SISTEMA]                       AS SISTEMA
       ,o.[ID_Origem]                     AS ID_Origem
-      ,o.[Orcamento_Empresacod]          AS Orcamento_Empresacod
+      ,o.[Orcamento_Empresacod]          AS Empresa_Codigo
       ,o.[Orcamento_Codigo]              AS Orcamento_Codigo
       ,o.[Orcamento_Veiculocod]          AS Veiculo_Codigo 
 	  ,v.[Veiculo_Chassi]                AS Chassi
@@ -40,15 +40,15 @@ SELECT
 	  ,(o.OficinaServico_Valor 
 	  + o.OficinaProduto_Valor)          AS Oficina_Valortotal
       ,o.[Orcamento_Complementar]        AS Orcamento_Complementar 
-	  ,os.OS_Numero                      AS OS_Numero
+	--  ,os.OS_Numero                      AS OS_Numero
 	  FROM camada0.DealerNet_Orcamento_teste o
-	  LEFT JOIN DW.dbo.OS os               ON (os.OS_Codigo    = o.Orcamento_Codigo AND os.idEmpresa = o.Orcamento_Veiculocod)
+	--  LEFT JOIN DW.dbo.OS os               ON os.OS_Codigo    = o.Orcamento_Codigo --AND os.idEmpresa = o.Orcamento_Veiculocod
 	  
-	  RIGHT JOIN (SELECT MAX(Orcamento_Codigo) AS ORCAMENTO_COD
-	        ,Orcamento_Veiculocod  AS ORCAMENTO_VEICULOCOD
+	  RIGHT JOIN (SELECT MAX(Orcamento_Codigo)    AS ORCAMENTO_COD
+	                       ,Orcamento_Veiculocod  AS ORCAMENTO_VEICULOCOD
 	  FROM   camada0.DealerNet_Orcamento_teste
 	  GROUP BY Orcamento_Veiculocod) Z ON Z.ORCAMENTO_COD = O.[Orcamento_Codigo]
-	  	  LEFT JOIN DW.dbo.Veiculo v           ON v.Veiculo_Codigo = o.Orcamento_veiculocod  where v.Sistema = 'dlr';
+	  	  LEFT JOIN DW.dbo.Veiculo v       ON v.Veiculo_Codigo = o.Orcamento_veiculocod  where v.Sistema = 'dlr';
 GO
 
 

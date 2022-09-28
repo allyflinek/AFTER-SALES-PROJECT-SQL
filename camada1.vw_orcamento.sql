@@ -1,12 +1,13 @@
 USE [stage]
 GO
 
-
+/****** Object:  View [camada1].[vw_Orcamento_Teste]    Script Date: 28/09/2022 10:30:48 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER VIEW [camada1].[vw_Orcamento_Teste]
@@ -27,6 +28,8 @@ SELECT
       ,o.[Orcamento_Observacao]          AS Observacao
       ,o.[OficinaServico_OScod]          AS OS_Codigo
       ,o.[Orcamento_TipoOSCod]           AS TipoOS_Codigo
+	  ,tp.[TipoOS_Sigla]                 AS Sigla_OS
+	  ,tp.[TipoOS_Descricao]             AS Descricao_OS
       ,o.[Orcamento_Status]              AS Orcamento_Status
       ,o.[OficinaOrcamento_KM]           AS KM
       ,o.[Orcamento_Validade]            AS Data_Validade
@@ -42,14 +45,14 @@ SELECT
       ,o.[Orcamento_Complementar]        AS Orcamento_Complementar 
 	--  ,os.OS_Numero                      AS OS_Numero
 	  FROM camada0.DealerNet_Orcamento_teste o
-	--  LEFT JOIN DW.dbo.OS os               ON os.OS_Codigo    = o.Orcamento_Codigo --AND os.idEmpresa = o.Orcamento_Veiculocod
-	  
-	  RIGHT JOIN (SELECT MAX(Orcamento_Codigo)    AS ORCAMENTO_COD
-	                       ,Orcamento_Veiculocod  AS ORCAMENTO_VEICULOCOD
+	--  LEFT JOIN DW.dbo.OS os                     ON os.OS_Codigo        = o.Orcamento_Codigo --AND os.idEmpresa = o.Orcamento_Veiculocod
+	  LEFT JOIN camada0.DealerNet_TipoOS tp         ON tp.TipoOS_Codigo   = o.Orcamento_TipoOSCod
+	  RIGHT JOIN (SELECT 
+	   MAX(Orcamento_Codigo) AS ORCAMENTO_COD
+	  ,Orcamento_Veiculocod  AS ORCAMENTO_VEICULOCOD
 	  FROM   camada0.DealerNet_Orcamento_teste
-	  GROUP BY Orcamento_Veiculocod) Z ON Z.ORCAMENTO_COD = O.[Orcamento_Codigo]
-	  	  LEFT JOIN DW.dbo.Veiculo v       ON v.Veiculo_Codigo = o.Orcamento_veiculocod  where v.Sistema = 'dlr';
+	  GROUP BY Orcamento_Veiculocod) Z              ON Z.ORCAMENTO_COD    = O.Orcamento_Codigo
+	  LEFT JOIN DW.dbo.Veiculo v                    ON v.Veiculo_Codigo   = o.Orcamento_veiculocod  where v.Sistema = 'dlr';
 GO
-
 
 

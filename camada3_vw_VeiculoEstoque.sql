@@ -10,6 +10,7 @@ GO
 
 
 
+
 ALTER view [camada3].[vw_Veiculo_Estoque] as     
 select      
  e.idEmpresa

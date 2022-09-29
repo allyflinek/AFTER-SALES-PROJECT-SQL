@@ -1,0 +1,4 @@
+TKM ACESSORIOS COM JEEPEAUDI}_VN+VD = 
+var JeepAudi = CALCULATE([Qtd. Venda Veículo (VN + VD)], FILTER(Empresa, Empresa[Empresa_MarcaDescr] = "AUDI" || Empresa[Empresa_MarcaDescr] = "JEEP"))
+var DiferenteJeepAudi = CALCULATE([Qtd. Venda Veículo (VN)] , FILTER(Empresa, Empresa[Empresa_MarcaDescr] <> "AUDI" && Empresa[Empresa_MarcaDescr] <> "JEEP"))
+return divide([Fat Acessorio],(JeepAudi + DiferenteJeepAudi))

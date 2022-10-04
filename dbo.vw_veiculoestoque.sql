@@ -10,18 +10,6 @@ GO
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 ALTER view [dbo].[vw_VeiculoEstoque] as --with schemabinding as   
 select    
  v.id
@@ -58,16 +46,18 @@ select
 ,FaixaEstoque = case when v.dias_estoque between 0 and 30 then '0 a 30'  
      when v.dias_estoque between 31 and 90 then '31 a 90'  
      when v.dias_estoque between 91 and 120 then '91 a 120'  
-     when v.dias_estoque between 121 and 180 then '121 a 180'  
+     when v.dias_estoque between 121 and 149 then '121 a 149'  
+	 when v.dias_estoque between 150 and 180 then '150 a 180'
      when v.dias_estoque > 180 then '> 180'  
      else '-'  
      end  
 ,FaixaEstoque_Numero = case when v.dias_estoque between 0 and 30 then 1  
      when v.dias_estoque between 31 and 90 then 2  
      when v.dias_estoque between 91 and 120 then 3  
-     when v.dias_estoque between 121 and 180 then 4  
-     when v.dias_estoque > 180 then 5  
-     else 6  
+     when v.dias_estoque between 121 and 149 then 4  
+	 when v.dias_estoque between 150 and 180 then 5
+     when v.dias_estoque > 180 then 6  
+     else 7  
      end  
 ,FaixaEstoqueValor = case when v.valor_compra between 0 and 50999 then '0 a 50mil'  
      when v.valor_compra between 51000 and 75999 then '51mil a 75mil'
